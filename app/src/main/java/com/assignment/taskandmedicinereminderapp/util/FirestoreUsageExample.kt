@@ -101,24 +101,17 @@ object FirestoreUsageExample {
     fun createMedicine(
         context: Context,
         name: String,
-        dosage: String,
-        frequency: Int,
         times: List<String>,
-        takeWith: String,
-        scheduleType: String,
-        days: List<String>?
+        withFood: Boolean,
+        durationDays: Int
     ) {
         scope.launch {
             val medicine = Medicine(
                 name = name,
-                dosage = dosage,
-                frequency = frequency,
                 times = times,
-                takeWith = takeWith,
-                scheduleType = scheduleType,
-                days = days,
-                refillCount = 30, // Default refill count
-                createdAt = Timestamp.now()
+                withFood = withFood,
+                durationDays = durationDays,
+                startDate = Timestamp.now()
             )
             
             val result = repository.addMedicine(medicine)
@@ -128,29 +121,6 @@ object FirestoreUsageExample {
                     Toast.makeText(context, "Medicine added successfully", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(context, "Failed to add medicine: ${result.exceptionOrNull()?.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-    
-    /**
-     * Example: How to log a medicine as taken
-     */
-    fun logMedicineTaken(context: Context, medicine: Medicine, onSuccess: () -> Unit) {
-        scope.launch {
-            val newTakenLog = medicine.takenLog.toMutableList().apply {
-                add(Timestamp.now())
-            }
-            
-            val updatedMedicine = medicine.copy(takenLog = newTakenLog)
-            val result = repository.updateMedicine(updatedMedicine)
-            
-            withContext(Dispatchers.Main) {
-                if (result.isSuccess) {
-                    Toast.makeText(context, "Medicine logged as taken", Toast.LENGTH_SHORT).show()
-                    onSuccess()
-                } else {
-                    Toast.makeText(context, "Failed to log medicine: ${result.exceptionOrNull()?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -180,9 +150,9 @@ object FirestoreUsageExample {
             
             withContext(Dispatchers.Main) {
                 if (result.isSuccess) {
-                    Toast.makeText(context, "Sleep log added successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Sleep logged successfully", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(context, "Failed to add sleep log: ${result.exceptionOrNull()?.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Failed to log sleep: ${result.exceptionOrNull()?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         }

@@ -135,7 +135,11 @@ class FirestoreRepository {
                 .get()
                 .await()
                 
-            val medicines = snapshot.documents.mapNotNull { it.toObject(Medicine::class.java) }
+            val medicines = snapshot.documents.mapNotNull { 
+                val medicine = it.toObject(Medicine::class.java)
+                // Make sure to preserve the document ID
+                medicine?.copy(id = it.id) 
+            }
             Result.success(medicines)
         } catch (e: Exception) {
             Result.failure(e)

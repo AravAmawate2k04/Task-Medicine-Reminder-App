@@ -48,9 +48,9 @@ fun LoginScreen(
                 isLoading = false
                 onNavigateToDashboard()
             }
-            is com.assignment.taskandmedicinereminderapp.viewmodel.AuthState.Error -> {
+            is com.assignment.taskandmedicinereminderapp.viewmodel.AuthState.AuthError -> {
                 isLoading = false
-                errorMessage = (authState as com.assignment.taskandmedicinereminderapp.viewmodel.AuthState.Error).message
+                errorMessage = (authState as com.assignment.taskandmedicinereminderapp.viewmodel.AuthState.AuthError).message
             }
             else -> {
                 isLoading = false

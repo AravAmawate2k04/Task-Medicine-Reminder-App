@@ -80,45 +80,33 @@ object FirestoreTestUtil {
                 // Daily medication
                 val dailyMedicine = Medicine(
                     name = "Vitamin D",
-                    dosage = "1 tablet",
-                    frequency = 1,
                     times = listOf("08:00"),
-                    takeWith = "After food",
-                    scheduleType = "Daily",
-                    days = null,
-                    refillCount = 30,
-                    createdAt = Timestamp.now()
+                    withFood = true,
+                    durationDays = 30,
+                    startDate = Timestamp.now()
                 )
                 
                 // Multiple times per day medication
                 val multipleDailyMedicine = Medicine(
                     name = "Blood Pressure Medication",
-                    dosage = "1 tablet",
-                    frequency = 2,
                     times = listOf("08:00", "20:00"),
-                    takeWith = "Before food",
-                    scheduleType = "Daily",
-                    days = null,
-                    refillCount = 60,
-                    createdAt = Timestamp.now()
+                    withFood = false,
+                    durationDays = 60,
+                    startDate = Timestamp.now()
                 )
                 
-                // Specific days medication
-                val specificDaysMedicine = Medicine(
-                    name = "Weekly Supplement",
-                    dosage = "2 tablets",
-                    frequency = 1,
-                    times = listOf("10:00"),
-                    takeWith = "With food",
-                    scheduleType = "Specific Days",
-                    days = listOf("Monday", "Thursday"),
-                    refillCount = 16,
-                    createdAt = Timestamp.now()
+                // Three times a day medication
+                val threeTimesMedicine = Medicine(
+                    name = "Pain Reliever",
+                    times = listOf("08:00", "14:00", "20:00"),
+                    withFood = true,
+                    durationDays = 7,
+                    startDate = Timestamp.now()
                 )
                 
                 repository.addMedicine(dailyMedicine)
                 repository.addMedicine(multipleDailyMedicine)
-                repository.addMedicine(specificDaysMedicine)
+                repository.addMedicine(threeTimesMedicine)
                 
                 Log.d(TAG, "Sample medicines added successfully")
             } catch (e: Exception) {
@@ -235,7 +223,9 @@ object FirestoreTestUtil {
                 if (medicinesResult.isSuccess) {
                     val medicines = medicinesResult.getOrNull()
                     Log.d(TAG, "💊 Retrieved ${medicines?.size ?: 0} medicines")
-                    medicines?.forEach { Log.d(TAG, "  ✓ Medicine: ${it.name} (Dosage: ${it.dosage})") }
+                    medicines?.forEach { 
+                        Log.d(TAG, "  ✓ Medicine: ${it.name} (Times: ${it.times.joinToString()}, With Food: ${it.withFood})")
+                    }
                 } else {
                     Log.e(TAG, "❌ Failed to retrieve medicines: ${medicinesResult.exceptionOrNull()?.message}")
                 }
