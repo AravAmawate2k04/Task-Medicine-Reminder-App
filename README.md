@@ -70,7 +70,7 @@ Refer to the project's `build.gradle` files for the complete list of required li
 
 ---
 
-## Professional Impacts
+## Impacts
 
 - **Improved Productivity:**  
   By adopting the Eisenhower Matrix, users learn to delegate, schedule, and focus, resulting in better task completion and less stress.
